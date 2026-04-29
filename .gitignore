@@ -1,2 +1,10 @@
 # Claude
 CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Issues
+docs/issues-draft.md
