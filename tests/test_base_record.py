@@ -1,49 +1,42 @@
-import unittest
 from src.models.base import BaseRecord
 
-class TestBaseRecord(unittest.TestCase):
 
-    # Test that a BaseRecord instance can be created successfully.
-    def test_create_base_record(self):
-        record = BaseRecord()
-        self.assertIsNotNone(record)
+def test_create_base_record():
+    record = BaseRecord()
 
-    #Test creating a record with a specified ID.
-    def test_create_with_id(self):
-        record = BaseRecord(record_id=1001)
-        self.assertEqual(record.id, 1001)
-
-    #Test created_at and updated_at are set correctly on initialization.
-    def test_time_fields_init(self):
-        record = BaseRecord()
-        self.assertIsNotNone(record.created_at)
-        self.assertIsNotNone(record.updated_at)
-        self.assertEqual(record.created_at, record.updated_at)
-
-    #Test that touch() updates the updated_at timestamp.
-    def test_touch_update_time(self):
-        record = BaseRecord()
-        old_updated_time = record.updated_at
-
-        import time
-        time.sleep(0.001)
-
-        record.touch()
-        self.assertGreater(record.updated_at, old_updated_time)
-        self.assertLess(record.created_at, record.updated_at)
-
-    #Test to_dict() returns a valid, serializable dictionary.
-    def test_to_dict_return_dict(self):
-        record = BaseRecord(record_id=2002)
-        result = record.to_dict()
-
-        self.assertIsInstance(result, dict)
-        self.assertEqual(result["id"], 2002)
-        self.assertIn("created_at", result)
-        self.assertIn("updated_at", result)
-        self.assertIsInstance(result["created_at"], str)
-        self.assertIsInstance(result["updated_at"], str)
+    assert record is not None
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_create_base_record_with_id():
+    record = BaseRecord(record_id=1001)
+
+    assert record.id == 1001
+
+
+def test_time_fields_are_initialized():
+    record = BaseRecord()
+
+    assert record.created_at is not None
+    assert record.updated_at is not None
+    assert record.created_at == record.updated_at
+
+
+def test_touch_updates_updated_at():
+    record = BaseRecord()
+    old_updated_at = record.updated_at
+
+    record.touch()
+
+    assert record.updated_at > old_updated_at
+    assert record.created_at < record.updated_at
+
+
+def test_to_dict_returns_serializable_base_fields():
+    record = BaseRecord(record_id=2002)
+    result = record.to_dict()
+
+    assert result == {
+        "id": 2002,
+        "created_at": record.created_at.isoformat(),
+        "updated_at": record.updated_at.isoformat(),
+    }

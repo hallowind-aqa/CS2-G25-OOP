@@ -1,6 +1,5 @@
-"""
-Data Models Package
-Contains all business entity classes and base models.
-"""
+"""Domain model package."""
 
 from .base import BaseRecord
+
+__all__ = ["BaseRecord"]
